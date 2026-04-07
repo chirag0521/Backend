@@ -1,11 +1,12 @@
 // server ko create karna
-
+const path = require("path")
 const express = require("express")
 const noteModel = require("./models/note.model")
 const cors = require("cors")
 const app = express()
 app.use(express.json()) // middleware
 app.use(cors())
+app.use(express.static("./public"))//middleware
 
 
 //POST api - /api/notes - create new note and save in mongoDB
@@ -50,6 +51,14 @@ app.patch('/api/notes/:id', async (req, res) => {
     res.status(200).json({
         message: "Note updated"
     })
+})
+
+console.log(__dirname);
+
+
+app.use('*name',(req,res)=>{
+    res.sendFile(path.join(__dirname,"..","/public/index.html"))
+    
 })
 
 module.exports = app

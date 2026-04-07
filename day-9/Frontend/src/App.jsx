@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const App = () => {
@@ -21,19 +21,93 @@ const App = () => {
     },
   ])
 
-  axios.get("http://localhost:3000/api/notes")
-  .then((res)=>{
-    setNotes  (res.data.notes);
-    
-  })
+
+  // *** ONE METHOD OF USING AXIOS
+
+  // async function getData(){
+  //   const response = await axios.get("http://localhost:3000/api/notes")
+  //   setNotes(response.data.notes);
+
+  // }
+  // getData()
+
+  // *** ANOTHER METHOD OF USING AXIOS
+
+  // axios.get("http://localhost:3000/api/notes")
+  //   .then((res) => {
+  //     setNotes(res.data.notes);
+  //   })
+
+  function fetchNotes() {
+    axios.get("http://localhost:3000/api/notes")
+      .then((res) => {
+        setNotes(res.data.notes)
+      })
+  }
+  useEffect(() => {
+    fetchNotes()
+  }, [])
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    const { title, description } = e.target.elements
+    console.log(title.value, description.value);
+
+    //To put this data in database or yeh data req.body mein ayega
+    axios.post("http://localhost:3000/api/notes", {
+      title: title.value,
+      description: description.value
+    })
+      .then((res) => {
+        console.log(res.data);
+        fetchNotes()
+
+      })
+  }
+
+  function handleDeleteNote(noteId) {
+    axios.delete("http://localhost:3000/api/notes/" + noteId)
+      .then((res) => {
+        console.log(res.data);
+        fetchNotes()
+      })
+
+  }
+
+  function handleUpdateDescription(noteId){
+    console.log(noteId);
+    const newDescription = prompt("Enter new description")
+    if(!newDescription) return
+  
+    axios.patch("http://localhost:3000/api/notes/"+noteId,{
+      description : newDescription
+    })
+    .then((res)=>{
+      console.log(res.data);
+      
+      fetchNotes()
+    })
+
+  }
+
+ 
   return (
     <>
+      <form className='note-create-form' onSubmit={(e) => {      // or directly onSubmit={handleSubmit}
+        handleSubmit(e)
+      }}>
+        <input name='title' type="text" placeholder='Enter title' />
+        <input name='description' type="text" placeholder='Enter description' />
+        <button>Create note</button>
+      </form>
       <div className="notes">
         {
           notes.map((elem) => {
             return <div className="note">
               <h1>{elem.title}</h1>
               <p>{elem.description}</p>
+              <button onClick={() => { handleDeleteNote(elem._id) }}>Delete</button>
+              <button onClick={()=>{handleUpdateDescription(elem._id)}}>Update description</button>
             </div>
           })
         }
