@@ -39,7 +39,7 @@ const App = () => {
   //   })
 
   function fetchNotes() {
-    axios.get("http://localhost:3000/api/notes")
+    axios.get("https://backend-pkni.onrender.com/api/notes")
       .then((res) => {
         setNotes(res.data.notes)
       })
@@ -54,7 +54,7 @@ const App = () => {
     console.log(title.value, description.value);
 
     //To put this data in database or yeh data req.body mein ayega
-    axios.post("http://localhost:3000/api/notes", {
+    axios.post("https://backend-pkni.onrender.com/api/notes", {
       title: title.value,
       description: description.value
     })
@@ -66,7 +66,7 @@ const App = () => {
   }
 
   function handleDeleteNote(noteId) {
-    axios.delete("http://localhost:3000/api/notes/" + noteId)
+    axios.delete("https://backend-pkni.onrender.com/api/notes/" + noteId)
       .then((res) => {
         console.log(res.data);
         fetchNotes()
@@ -79,7 +79,7 @@ const App = () => {
     const newDescription = prompt("Enter new description")
     if(!newDescription) return
   
-    axios.patch("http://localhost:3000/api/notes/"+noteId,{
+    axios.patch("https://backend-pkni.onrender.com/api/notes/"+noteId,{
       description : newDescription
     })
     .then((res)=>{
