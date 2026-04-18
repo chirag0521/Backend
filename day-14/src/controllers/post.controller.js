@@ -23,7 +23,7 @@ async function createPostController(req, res) {
     }
     let decoded = null
     //Agar token mila 
-    //try catch isiliye use kiya ki agar token aya ot woh humara nhi hai ya kuch galat hai isiliye
+    //try catch isiliye use kiya ki agar token aya or woh humara nhi hai ya kuch galat hai isiliye
     try {
         // const has block scope and it cant be accessed outside the block so we change to let 
         decoded = jwt.verify(token, process.env.JWT_SECRET)
