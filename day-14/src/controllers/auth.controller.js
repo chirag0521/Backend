@@ -67,7 +67,7 @@ async function registerController(req, res) {
         id: user._id
     }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
-    res.cookie("token", token)
+    res.cookie("token", token) // first is the name of the token and the other is token itself, we can keep anyName
 
     res.status(201).json({
         message: "User registered",
