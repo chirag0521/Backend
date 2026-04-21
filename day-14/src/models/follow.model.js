@@ -3,20 +3,17 @@ const mongoose = require("mongoose")
 const followSchema = new mongoose.Schema({
     //kon follower kar raha h
     follower: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        required: [true, "Follower is required"]
+        type: String,
     },
-
     //kise follow kiya ja raha hai
     followee: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-        required: [true, "Followee is required"]
+        type: String,
     }
 }, {
     timestamps: true
 })
+ 
+followSchema.index({ follower: 1, followee: 1 }, { unique: true })
 
 const followModel = mongoose.model("follows", followSchema)
 

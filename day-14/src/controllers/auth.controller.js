@@ -64,7 +64,8 @@ async function registerController(req, res) {
 
     // Token creation
     const token = jwt.sign({
-        id: user._id
+        id: user._id,
+        username: user.username
     }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
     res.cookie("token", token) // first is the name of the token and the other is token itself, we can keep anyName
@@ -110,7 +111,7 @@ async function loginController(req, res) {
         })
     }
     const token = jwt.sign({
-        id: user._id
+        id: user._id, username: user.username
     }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
     res.cookie("token", token)
