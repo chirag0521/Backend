@@ -44,11 +44,9 @@ async function followUserController(req, res) {
             })
         }
         if (isAlreadyFollowing.status === "rejected") {
-            await followModel.findByIdAndUpdate(isAlreadyFollowing._id, {
-                status: "pending"
-            })
+            await followModel.findByIdAndUpdate(isAlreadyFollowing._id,{status:"pending"},{new:true})
             return res.status(200).json({
-                message: `Follow request sent to ${followeeUsername}`,
+                message: `Your previous request was rejected. Follow request sent again to ${followeeUsername}`,
             })
         }
 
@@ -58,7 +56,7 @@ async function followUserController(req, res) {
     const followRecord = await followModel.create({
         follower: followerUsername,
         followee: followeeUsername,
-        status:"pending"
+        status: "pending"
     })
 
     res.status(201).json({
@@ -88,6 +86,7 @@ async function unfollowUserController(req, res) {
     await followModel.findByIdAndDelete(isUserFollowing._id)
 
     /**
+     * @anotherMethod =
      * await followModel.deleteOne({
      * follower:followerUsername,
      * followee:followeeUsername,
@@ -100,7 +99,87 @@ async function unfollowUserController(req, res) {
 
 }
 
+
+async function getPendingRequestController(req, res) {
+    const username = req.user.username
+
+    const pendingRequests = await followModel.find({
+        followee: username,
+        status: "pending"
+    })
+/**
+ * @remember =  find humesha array return karta hai isilye woh empty ho skta hai per null nhi isiliye "if" ese likha hai
+ */
+    if (pendingRequests.length === 0) {
+        return res.status(200).json({
+            message: "No request pending found",
+            pendingRequests:[]
+        })
+    }
+    res.status(200).json({
+        message: "pending follow requests",
+        pendingRequests
+    })
+}
+
+async function acceptFollowerController(req, res) {
+    const followeeUsername = req.user.username
+    const followerUsername = req.params.username
+
+    /**
+     * @description - we find user and then update its status from pending to accepted
+     */
+    const acceptRequest = await followModel.findOneAndUpdate({
+        follower: followerUsername,
+        followee: followeeUsername,
+        status: "pending"
+    },
+        { status: "accepted" },
+        { new: true })
+
+    if (!acceptRequest) {
+        return res.status(404).json({
+            message: "No pending request found"
+        })
+    }
+    res.status(200).json({
+        message: `${followerUsername} is now following you`,
+        acceptRequest
+    })
+}
+
+async function rejectFollowerController(req, res) {
+    const followerUsername = req.params.username
+    const followeeUsername = req.user.username
+
+    const rejectRequest = await followModel.findOneAndUpdate({
+        follower: followerUsername,
+        followee: followeeUsername,
+        status: "pending"
+    },
+        { status: "rejected" },
+        { new: true })
+
+
+    if (!rejectRequest) {
+        return res.status(404).json({
+            message: "No pending request found"
+        })
+    }
+    res.status(200).json({
+        message: `Follow request from ${followerUsername} rejected `,
+        rejectRequest
+
+    })
+}
+
+
+
 module.exports = {
     followUserController,
-    unfollowUserController
+    unfollowUserController,
+    getPendingRequestController,
+    acceptFollowerController,
+    rejectFollowerController
+
 }
