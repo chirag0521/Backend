@@ -3,7 +3,7 @@ const userModel = require("../models/user.model")
 
 async function followUserController(req, res) {
 
-    //konse user ne api pe request ki woh username yaha mil jayega
+    //konse user ne api pe request ki =  woh username yaha mil jayega
     const followerUsername = req.user.username
     //kon follow ho raha hai uskaa username ya kisse follow kiya jaa raha hai uska username params mein h
     const followeeUsername = req.params.username

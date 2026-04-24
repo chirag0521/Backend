@@ -35,8 +35,6 @@ async function createPostController(req, res) {
 
 async function getPostController(req, res) {
 
-
-
     const userId = req.user.id
 
     const posts = await postModel.find({
@@ -61,7 +59,7 @@ async function getPostDetailsController(req, res) {
             message: "Post not found."
         })
     }
-    //post.user and userId dono objectID hai objectId normally compare nhi hote hai
+    //post.user  objectID hai|| objectId normally compare nhi hote hai
     const isValidUser = post.user.toString() === userId  // userId decoded.id se nikala hai isiliye woh already string mein hai
     if (!isValidUser) {
         return res.status(403).json({
