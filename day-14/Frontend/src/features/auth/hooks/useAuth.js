@@ -32,11 +32,10 @@ export const useAuth = () => {
         setUser(response.user)
 
         setLoading(false)
-
     }
 
     return {
-        user,loading,handleLogin,handleRegister
+        user, loading, handleLogin, handleRegister
     }
 
 }

@@ -5,15 +5,15 @@ import Register from "./features/auth/pages/Register"
 
 export const router = createBrowserRouter([
     {
-        path:"/login",
-        element:<Login />
+        path: '/login',
+        element: <Login />
     },
     {
-        path:"/register",
-        element:<Register />
+        path: "/register",
+        element: <Register />
     },
     {
-        path:"/",
-        element: <h1>Welcome to 4 layer architecture of react</h1>
+        path: "/",
+        element: <h1>Welcome to 4 layer react architecture</h1>
     }
 ])
