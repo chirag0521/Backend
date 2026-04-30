@@ -91,12 +91,31 @@ async function likePostController(req, res) {
     })
 
     res.status(200).json({
-        message:"Post liked succesfully",
+        message: "Post liked succesfully",
         like
     })
 
 }
 
+async function getFeedController(req, res) {
 
-module.exports = { createPostController, getPostController, getPostDetailsController, likePostController }
+    const user = req.user
+    const posts = await Promise.all((await postModel.find().populate("user").lean())
+        .map(async (post) => {
+            const isLiked = await likeModel.findOne({
+                user: user.username,
+                post: post._id
+            })
+            post.isLiked = Boolean(isLiked)
+
+            return post
+        }))
+
+    res.status(200).json({
+        message: "Posts fetched Successfully",
+        posts
+    })
+}
+
+module.exports = { createPostController, getPostController, getPostDetailsController, likePostController, getFeedController }
 
