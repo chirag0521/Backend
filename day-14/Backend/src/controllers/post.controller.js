@@ -12,7 +12,7 @@ const imagekit = new ImageKit({
 
 async function createPostController(req, res) {
 
-    console.log(req.body, req.file);
+    // console.log(req.body, req.file);
 
     // server se file cloudStorage (Image Kit) tak pocha rahi hai yeh code
     const file = await imagekit.files.upload({
