@@ -20,11 +20,17 @@ postRouter.get("/", identifyUser, postController.getPostController)
 postRouter.get("/details/:postId", identifyUser, postController.getPostDetailsController)
 
 /**
- * @route POST = /api/posts/like/:postid
+ * @route POST = /api/posts/like/:postId
  * @description - like a post with id provided in the request params
  */
 
 postRouter.post("/like/:postId",identifyUser,postController.likePostController)
+
+/**
+ * @route Post = /api/posts/unlike/:postId
+ * @description - unlike post ko delete karta hai collection se
+ */
+postRouter.post("/unlike/:postId",identifyUser,postController.unLikePostController)
 
 /**
  * @route GET = /api/posts/feed

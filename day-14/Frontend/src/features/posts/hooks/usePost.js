@@ -2,7 +2,7 @@
  * @layer = HOOK layer
  */
 
-import { getFeed, createPost } from "../services/post.api"
+import { getFeed, createPost, likePost, unLikePost } from "../services/post.api"
 import { useContext, useEffect } from "react"
 import { PostContext } from "../post.context.jsx"
 
@@ -35,11 +35,28 @@ export const usePost = () => {
 
     }
 
+    const handleLike = async (post) => {
+
+        const data = await likePost(post)
+
+        await handleGetFeed()
+
+    }
+
+    const handleUnLike = async (post) => {
+
+        const data = await unLikePost(post)
+
+        await handleGetFeed()
+
+    }
+
+
     useEffect(() => {
         handleGetFeed()
     }, [])
 
-    return { loading, feed, post, handleGetFeed, handleCreatePost }
+    return { loading, feed, post, handleGetFeed, handleCreatePost, handleLike, handleUnLike }
 
 }
 
