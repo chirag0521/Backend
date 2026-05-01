@@ -3,9 +3,10 @@
  */
 
 import React, { useEffect } from 'react'
-import "./style/feed.scss"
+import "../style/feed.scss"
 import Post from '../components/Post'
 import { usePost } from '../hooks/usePost'
+import Nav from '../../shared/components/Nav'
 
 const Feed = () => {
 
@@ -26,11 +27,12 @@ const Feed = () => {
 
     return (
         <main className='feed-page'>
+            <Nav />
             <div className="feed">
                 <div className="posts">
                     {feed.map(post=>{
                         return <Post user={post.user} post={post} />
-                    })}
+                    }).reverse()}
                 </div>
             </div>
         </main>
