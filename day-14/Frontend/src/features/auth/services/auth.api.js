@@ -1,5 +1,5 @@
 /**
- * @Layer = API layer - kaam hia backend se communicate karna
+ * @Layer = API layer - kaam hai backend se communicate karna
  */
 
 import axios from "axios"
