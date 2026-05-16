@@ -1,11 +1,13 @@
-import app from "./src/app.js";
-import dotenv from "dotenv";
-import connectToDb from "./src/config/database.js";
-
 /**
  * @remember  = we can directly config env like = imoprt "dotenv/config" so now no need to do dotenv.config
  */
-dotenv.config()
+import "dotenv/config";
+
+
+import app from "./src/app.js";
+import connectToDb from "./src/config/database.js";
+
+
 
 
 connectToDb()
