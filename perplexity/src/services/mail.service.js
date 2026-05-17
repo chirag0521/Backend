@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 
+
+//it use SMTP server to send email . Here we are using gmail server
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
