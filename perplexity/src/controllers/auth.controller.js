@@ -48,14 +48,14 @@ export async function register(req, res) {
 
     await sendEmail({
         to: email,
-        subject: "Welcome to Alex Perplexity!",
+        subject: "Welcome to Alexity!",
         html: `
         <p>Hi ${username} ,</p>
-        <p>Thank you for registering at <strong>Alex Perplexity</strong>We're excited to have you on board!</p>
+        <p>Thank you for registering at <strong>Alexity</strong>We're excited to have you on board!</p>
         <p>Please verify your email address by clicking on the link below:</p>
         <a href="http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}">Verify Email </a>
         <p>If you did not create an account, please ignore this mail.</p>
-        <p>Best regards,<br>The Alex Perplexity Team</p>
+        <p>Best regards,<br>The Alexity Team</p>
         `
     })
 
