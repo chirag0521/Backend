@@ -79,6 +79,7 @@ export async function register(req, res) {
  * @query {token}
  */
 export async function verifyEmail(req, res) {
+    
     const { token } = req.query;
 
     try {
