@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken"
 
+//middleware to check user's authentication
+
+
 export function authUser(req, res, next) {
 
     const token = req.cookies.token
