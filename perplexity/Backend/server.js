@@ -9,8 +9,6 @@ import connectToDb from "./src/config/database.js";
 
 import { testAi } from "./src/services/ai.service.js";
 
-testAi()
-
 connectToDb()
 
 app.listen(3000, () => {
