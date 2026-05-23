@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-
+//trasnporter is the key thing which handles sending of an email through SMTP server
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
