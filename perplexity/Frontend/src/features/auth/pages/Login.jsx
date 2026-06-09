@@ -1,21 +1,27 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import { useAuth } from "../hook/useAuth.js"
 
 const Login = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate()
+    const { handleLogin } = useAuth()
 
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault()
 
         //this is the data which we are going to send to backend
         const payload = {
-            email,password
+            email, password
         }
 
+        await handleLogin(payload)
+        navigate("/")
+
         console.log('Login payload:', payload);
-        
+
     }
 
     return (
@@ -41,14 +47,14 @@ const Login = () => {
 
                         <div>
                             <label htmlFor="password" className='mb-2 text-sm font-medium text-zinc-200'>Password</label>
-                            <input 
-                            value={password}
-                            onChange={(e)=>setPassword(e.target.value)}
-                            type="password" 
-                            id='password' 
-                            placeholder='password' 
-                            required 
-                            className='w-full rounded-lg border border-zinc-700 bg-zinc-950/80 px-4 py-1.5 text-zinc-100 outline-none  transition focus:border-[#31b8c6] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.25)]' />
+                            <input
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                type="password"
+                                id='password'
+                                placeholder='password'
+                                required
+                                className='w-full rounded-lg border border-zinc-700 bg-zinc-950/80 px-4 py-1.5 text-zinc-100 outline-none  transition focus:border-[#31b8c6] focus:shadow-[0_0_0_3px_rgba(49,184,198,0.25)]' />
                         </div>
 
                         <button type='submit' className='w-full rounded-lg bg-[#31b8c6] px-4 py-3 font-semibold text-zinc-950 transition hover:bg-[#45c7d4] focus:oultine-none focus:shadow-[0_0_0_3px_rgba(49,184,198,0.35)]'>Login</button>

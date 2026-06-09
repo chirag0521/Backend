@@ -1,6 +1,6 @@
-import { useDispatch } from 'react-redux'
-import { register, login, getMe } from '../services/auth.api'
-import { setUser, setLoading, setError } from '../auth.slice'
+import { useDispatch } from "react-redux"
+import { login, register, getMe } from "../services/auth.api.js"
+import { setUser, setLoading, setError } from "../auth.slice.js"
 
 export function useAuth() {
 
@@ -11,11 +11,12 @@ export function useAuth() {
             dispatch(setLoading(true))
             // eslint-disable-next-line no-unused-vars
             const data = await register({ email, username, password })
-
-        } catch (error) {
-            dispatch(setError(error.response?.data?.message || 'Registration failed'))
-
-        } finally {
+            //yaha pe data nhi ayega because humne email verification use kiya hai
+        }
+        catch (error) {
+            dispatch(setError(error.response?.data?.message || "Registration failed"))
+        }
+        finally {
             dispatch(setLoading(false))
         }
     }
@@ -25,11 +26,11 @@ export function useAuth() {
             dispatch(setLoading(true))
             const data = await login({ email, password })
             dispatch(setUser(data.user))
-
-        } catch (error) {
+        }
+        catch (error) {
             dispatch(setError(error.response?.data?.message || "Login failed"))
-
-        } finally {
+        }
+        finally {
             dispatch(setLoading(false))
         }
     }
@@ -39,19 +40,16 @@ export function useAuth() {
             dispatch(setLoading(true))
             const data = await getMe()
             dispatch(setUser(data.user))
-
-        } catch (error) {
+        }
+        catch (error) {
             dispatch(setError(error.response?.data?.message || "Failed to fetch user data"))
-
-        } finally {
+        }
+        finally {
             dispatch(setLoading(false))
         }
     }
 
     return {
-        handleRegister,
-        handleLogin,
-        handleGetMe
+        handleRegister, handleLogin, handleGetMe
     }
-
 }
