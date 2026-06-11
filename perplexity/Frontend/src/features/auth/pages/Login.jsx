@@ -1,13 +1,20 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from "../hook/useAuth.js"
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router'
 
 const Login = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const user = useSelector(state => state.auth.user)
+    const loading = useSelector(state => state.auth.loading)
+
     const navigate = useNavigate()
     const { handleLogin } = useAuth()
+
 
     const submitForm = async (e) => {
         e.preventDefault()
@@ -20,8 +27,10 @@ const Login = () => {
         await handleLogin(payload)
         navigate("/")
 
-        console.log('Login payload:', payload);
-
+    }
+ 
+    if (!loading && user) {
+        return <Navigate to="/" replace />
     }
 
     return (
