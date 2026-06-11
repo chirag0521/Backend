@@ -22,6 +22,7 @@ export function useAuth() {
     }
 
     async function handleLogin({ email, password }) {
+        console.log("handleLogin called")
         try {
             dispatch(setLoading(true))
             const data = await login({ email, password })
