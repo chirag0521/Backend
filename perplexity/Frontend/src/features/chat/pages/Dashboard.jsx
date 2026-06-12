@@ -11,6 +11,7 @@ const Dashboard = () => {
     console.log(user);
     useEffect(()=>{
         chat.initializeSocketConnection()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     return (
