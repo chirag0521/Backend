@@ -57,7 +57,8 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </aside>
-                <section className='relative flex h-full min-w-0 flex-1 flex-col gap-4'>
+                <section className='relative max-w-3/5 mx-auto flex h-full  min-w-0 flex-1 flex-col gap-4'>
+
                     <div className='messages flex-1 space-y-3 overflow-y-auto pr-1 pb-30'>
                         {dummyMessages.map((message) => (
                             <div
@@ -70,13 +71,13 @@ const Dashboard = () => {
                             </div>
                         ))}
                     </div>
-                    <footer className='rounded-3xl w-full absolute bottom-2 border border-white/60 bg-[#080b12] p-1 md:p-2'>
+                    <footer className='rounded-3xl w-full absolute bottom-2 border-white/60 bg-[#080b12] p-1 md:p-1 '>
                         <form onSubmit={handleSubmitMessage} className='flex flex-col gap-3 md:flex-row'>
                             <input type="text"
                                 value={chatInput}
                                 onChange={(e) => setChatInput(e.target.value)}
                                 placeholder='Type your message'
-                                className='w-full rounded-2xl border border-white/50 bg-transparent px-4 py-2 text-lg text-white outline-none transition placeholder:text-white/45 focus:border-white/90'
+                                className='w-full rounded-2xl border border-white/50 bg-transparent px-4 py-2 text-lg text-white outline-none transition placeholder:text-white/45 focus:border-white/90  hover:shadow-[0_0_10px_rgba(59,130,246,0.5)]'
                             />
                             <button
                                 type='submit'
