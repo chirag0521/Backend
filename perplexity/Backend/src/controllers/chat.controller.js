@@ -30,7 +30,7 @@ export async function sendMessage(req, res) {
     })
 
     //iska matlab ek chat mein kya kya baate hui hai
-    const messages = await messageModel.find({ chat: chatId })
+    const messages = await messageModel.find({ chat: chatId || chat._id })
 
 
     const result = await generateResponse(messages)

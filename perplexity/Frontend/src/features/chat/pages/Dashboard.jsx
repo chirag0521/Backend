@@ -2,43 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useChat } from '../hooks/useChat'
 
-const dummyMessages = [
-    {
-        id: 1,
-        role: 'user',
-        content: "What is the weather like in Delhi today"
-    },
-    {
-        id: 2,
-        role: "ai",
-        content: "Delhi is warm today with a high around 43C and feels like 45C"
-    },
-    {
-        id: 3,
-        role: 'user',
-        content: 'Suggest a healthy 10-minute breakfast'
-    },
-    {
-        id: 4,
-        role: 'ai',
-        content: "Oats and bananas"
-    }
-]
+
+
 
 const Dashboard = () => {
 
     const chat = useChat()
+    const [chatInput, setChatInput] = useState('')
+    const [userMessage, setUserMessage] = useState('')
 
-    const user = useSelector(state => state.auth.user)
+    const chats = useSelector((state) => state.chat.chats)
+    const currentChatId = useSelector((state) => state.chat.currentChatId)
+
+    // const user = useSelector(state => state.auth.user)
     // const { user } = useSelector(state => state.auth) same as above just destructured
-    console.log(user);
+    // console.log(user);
+
     useEffect(() => {
         chat.initializeSocketConnection()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    const [chatInput, setChatInput] = useState('')
+
     const handleSubmitMessage = (e) => {
         e.preventDefaut()
+        const trimmedMessage = chatInput.trim()
+        if (!trimmedMessage) {
+            return
+        }
+        setUserMessage(trimmedMessage)
+        setChatInput('')
+
 
     }
     return (

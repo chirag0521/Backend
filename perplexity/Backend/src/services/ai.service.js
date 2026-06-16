@@ -28,7 +28,7 @@ export async function generateResponse(messages) {
             return new AIMessage(message.content)
         }
     }))
-
+    
     return response.text
 }
 
