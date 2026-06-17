@@ -24,12 +24,12 @@ const Dashboard = () => {
     }, [])
 
     const handleSubmitMessage = (e) => {
-        e.preventDefaut()
+        e.preventDefault()
         const trimmedMessage = chatInput.trim()
         if (!trimmedMessage) {
             return
         }
-        setUserMessage(trimmedMessage)
+        chat.handleSendMessage({ message: trimmedMessage, chatId: currentChatId })
         setChatInput('')
 
 
@@ -53,7 +53,7 @@ const Dashboard = () => {
                 <section className='relative max-w-3/5 mx-auto flex h-full  min-w-0 flex-1 flex-col gap-4'>
 
                     <div className='messages flex-1 space-y-3 overflow-y-auto pr-1 pb-30'>
-                        {dummyMessages.map((message) => (
+                        {chats[currentChatId]?.messages.map((message) => (
                             <div
                                 key={message.id}
                                 className={`max-w-[82%] w-fit rounded-2xl px-3 py-2 text-sm md:text-base ${message.role === 'user'
