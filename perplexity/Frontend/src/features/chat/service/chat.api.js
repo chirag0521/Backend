@@ -21,13 +21,13 @@ export const getChats = async () => {
 
 export const getMessages = async (chatId) => {
 
-    const response = api.get(`/api/chats/${chatId}/messages`)
+    const response = await api.get(`/api/chats/${chatId}/messages`)
     return response.data
 
 }
 
 export const deleteChat = async (chatId) => {
 
-    const response = api.delete(`/api/chats/delete/${chatId}`)
+    const response = await api.delete(`/api/chats/delete/${chatId}`)
     return response.data
 }

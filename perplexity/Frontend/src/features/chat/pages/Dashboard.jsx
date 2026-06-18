@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { Children, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useChat } from '../hooks/useChat'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 
 
@@ -20,6 +22,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         chat.initializeSocketConnection()
+        chat.handleGetChats()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -34,18 +37,22 @@ const Dashboard = () => {
 
 
     }
+    const openChat = (chatId) =>{
+        chat.handleOpenChat(chatId)
+    }
     return (
         <main className='min-h-screen w-full flex bg-[#07090f] p-3 text-white md:p-5'>
             <section className='mx-auto flex h-[calc(100vh-1.5rem)] w-full gap-4 rounded-3xl border-none p-1 md:h-[calc(100vh-2.5rem)] md:gap-6 md:p-1'>
                 <aside className=' h-full w-72 shrink rounded-3xl border bg-[#080b12] p-4 md:flex md:flex-col'>
                     <h1 className='mb-5 text-3xl font-semibold'>Alexity</h1>
                     <div className='space-y-2'>
-                        {Array.from({ length: 6 }).map((_, index) => (
+                        {Object.values(chats).map((chat, index) => (
                             <button
+                                onClick={()=>(openChat(chat.id))}
                                 key={index}
                                 type='button'
-                                className='w-full rounded-xl border border-white/60 bg-transparent px-3 py-2 text-left text-base font-medium text-white/90 transition hover:border-white hover:text-white hover:shadow-md shadow-blue-500/50'>
-                                Chat title
+                                className='w-full cursor-pointer rounded-xl border border-white/60 bg-transparent px-3 py-2 text-left text-sm font-medium text-white/90 transition hover:border-white hover:text-white hover:shadow-md shadow-blue-500/50'>
+                                {chat.title}
                             </button>
                         ))}
                     </div>
@@ -60,7 +67,20 @@ const Dashboard = () => {
                                     ? 'ml-auto rounded-br-none bg-white/12 text-white'
                                     : 'mr-auto rounded-bl-none bg-[#0f1626] text-white/90'
                                     }`} >
-                                <p>{message.content}</p>
+                                {message.role === 'user' ? (
+                                    <p>{message.content}</p>
+                                ):(
+                                    <ReactMarkdown
+                                    components={{
+                                        p:({children}) => <p className='mb-2 last:mb-0'>{children}</p>,
+                                        ul:({children}) => <ul className='mb-2 list-disc pl-5'>{children}</ul>,
+                                        ol:({children}) => <ol className='mb-2 list-decimal pl-5'>{children}</ol>,
+                                        code:({children}) => <code className='rounded bg-white/10 px-1 py-0.5'>{children}</code>,
+                                        pre:({children}) => <pre className='mb-2 overflow-x-auto rounded-xl bg-black/30 p-3'>{children}</pre>
+                                    }}
+                                    remarkPlugins={[remarkGfm]}
+                                    >{message.content}</ReactMarkdown>
+                                )}
                             </div>
                         ))}
                     </div>
