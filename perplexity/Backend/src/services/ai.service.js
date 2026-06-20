@@ -1,6 +1,8 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatMistralAI } from "@langchain/mistralai"
-import { HumanMessage, SystemMessage, AIMessage } from "langchain"
+import { HumanMessage, SystemMessage, AIMessage, tool, createAgent } from "langchain"
+import * as z from "zod"
+import { searchInternet } from "./internet.service.js";
 
 
 const geminiModel = new ChatGoogleGenerativeAI({
@@ -13,23 +15,42 @@ const mistralModel = new ChatMistralAI({
     apiKey: process.env.MISTRAL_API_KEY
 })
 
+const searchInternetTool = tool(
+    searchInternet,
+    {
+        name: "searchInternet",
+        description: "Use this tool to get the latest information from the internet.",
+        schema: z.object({
+            query: z.string().describe("The search query to look up on the internet")
+        })
+    }
+)
+
+const internetAgent = createAgent({
+    model: geminiModel,
+    tools: [searchInternetTool],
+})
+
+
 
 // this function is used to generate response from AI
 export async function generateResponse(messages) {
-    
+
     // const response = await geminiModel.invoke([
     //     new HumanMessage(message)
     // ])
 
-    const response = await geminiModel.invoke(messages.map(message => {
-        if (message.role === "user") {
-            return new HumanMessage(message.content)
-        } else if (message.role === "ai") {
-            return new AIMessage(message.content)
-        }
-    }))
-    
-    return response.text
+    const response = await internetAgent.invoke({
+        messages: messages.map(msg => {
+            if (msg.role === 'user') {
+                return new HumanMessage(msg.content)
+            } else if (msg.role == 'ai') {
+                return new AIMessage(msg.content)
+            }
+        })
+    })
+
+    return response.messages[response.messages.length - 1].text
 }
 
 // this function is used to generate title for chat and this title will be genrated by AI

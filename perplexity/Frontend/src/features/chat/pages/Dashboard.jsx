@@ -37,8 +37,8 @@ const Dashboard = () => {
 
 
     }
-    const openChat = (chatId) =>{
-        chat.handleOpenChat(chatId)
+    const openChat = (chatId) => {
+        chat.handleOpenChat(chatId,chats)
     }
     return (
         <main className='min-h-screen w-full flex bg-[#07090f] p-3 text-white md:p-5'>
@@ -48,7 +48,7 @@ const Dashboard = () => {
                     <div className='space-y-2'>
                         {Object.values(chats).map((chat, index) => (
                             <button
-                                onClick={()=>(openChat(chat.id))}
+                                onClick={() => (openChat(chat.id))}
                                 key={index}
                                 type='button'
                                 className='w-full cursor-pointer rounded-xl border border-white/60 bg-transparent px-3 py-2 text-left text-sm font-medium text-white/90 transition hover:border-white hover:text-white hover:shadow-md shadow-blue-500/50'>
@@ -65,21 +65,22 @@ const Dashboard = () => {
                                 key={message.id}
                                 className={`max-w-[82%] w-fit rounded-2xl px-3 py-2 text-sm md:text-base ${message.role === 'user'
                                     ? 'ml-auto rounded-br-none bg-white/12 text-white'
-                                    : 'mr-auto rounded-bl-none bg-[#0f1626] text-white/90'
+                                    : 'mr-auto text-white/90'
                                     }`} >
                                 {message.role === 'user' ? (
                                     <p>{message.content}</p>
-                                ):(
+                                ) : (
                                     <ReactMarkdown
-                                    components={{
-                                        p:({children}) => <p className='mb-2 last:mb-0'>{children}</p>,
-                                        ul:({children}) => <ul className='mb-2 list-disc pl-5'>{children}</ul>,
-                                        ol:({children}) => <ol className='mb-2 list-decimal pl-5'>{children}</ol>,
-                                        code:({children}) => <code className='rounded bg-white/10 px-1 py-0.5'>{children}</code>,
-                                        pre:({children}) => <pre className='mb-2 overflow-x-auto rounded-xl bg-black/30 p-3'>{children}</pre>
-                                    }}
-                                    remarkPlugins={[remarkGfm]}
-                                    >{message.content}</ReactMarkdown>
+                                        components={{
+                                            p: ({ children }) => <p className='mb-2 last:mb-0'>{children}</p>,
+                                            ul: ({ children }) => <ul className='mb-2 list-disc pl-5'>{children}</ul>,
+                                            ol: ({ children }) => <ol className='mb-2 list-decimal pl-5'>{children}</ol>,
+                                            code: ({ children }) => <code className='rounded bg-white/10 px-1 py-0.5'>{children}</code>,
+                                            pre: ({ children }) => <pre className='mb-2 overflow-x-auto rounded-xl bg-black/30 p-3'>{children}</pre>
+                                        }}
+                                        remarkPlugins={[remarkGfm]}
+                                    >{message.content}
+                                    </ReactMarkdown>
                                 )}
                             </div>
                         ))}
