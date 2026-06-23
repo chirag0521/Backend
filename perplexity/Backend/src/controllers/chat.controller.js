@@ -107,7 +107,7 @@ export async function deleteChat(req, res) {
     }
 
     res.status(200).json({
-        message:"Chat deleted successfully"
+        message: "Chat deleted successfully"
     })
 
 }

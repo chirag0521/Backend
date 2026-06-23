@@ -26,7 +26,11 @@ export const useChat = () => {
             content: aiMessage.content,
             role: aiMessage.role
         }))
-        dispatch(setCurrentChatId(chat._id))
+
+        console.log("chat =", chat)
+        console.log("chatId =", chatId)
+
+        dispatch(setCurrentChatId(chatId || chat?._id))
     }
 
     async function handleGetChats() {

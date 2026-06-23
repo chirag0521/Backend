@@ -11,7 +11,7 @@ const geminiModel = new ChatGoogleGenerativeAI({
 });
 
 const mistralModel = new ChatMistralAI({
-    model: "mistral-small-latest",
+    model: "mistral-medium-latest",
     apiKey: process.env.MISTRAL_API_KEY
 })
 
@@ -27,7 +27,7 @@ const searchInternetTool = tool(
 )
 
 const internetAgent = createAgent({
-    model: geminiModel,
+    model: mistralModel,
     tools: [searchInternetTool],
 })
 
@@ -41,14 +41,20 @@ export async function generateResponse(messages) {
     // ])
 
     const response = await internetAgent.invoke({
-        messages: messages.map(msg => {
-            if (msg.role === 'user') {
-                return new HumanMessage(msg.content)
-            } else if (msg.role == 'ai') {
-                return new AIMessage(msg.content)
-            }
-        })
-    })
+        messages: [
+            new SystemMessage(`
+                You are a helpful and precise assistant for answering questions.
+                If you don't know the answer, say you don't know. 
+                If the question requires up-to-date information, use the "searchInternet" tool to get the latest information from the internet and then answer based on the search results.
+            `),
+            ...(messages.map(msg => {
+                if (msg.role == "user") {
+                    return new HumanMessage(msg.content)
+                } else if (msg.role == "ai") {
+                    return new AIMessage(msg.content)
+                }
+            }))]
+    });
 
     return response.messages[response.messages.length - 1].text
 }
